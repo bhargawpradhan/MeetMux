@@ -13,7 +13,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Query, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.gzip import GZipMiddleware
 from typing import Optional, List, Dict, Any
 
@@ -609,3 +610,28 @@ async def ws_alerts(websocket: WebSocket):
             await asyncio.sleep(10)
     except WebSocketDisconnect:
         pass
+
+# ════════════════════════════════════════════════════════════════════════════════
+# PRODUCTION / DEPLOYMENT STATIC FILES & SPA FALLBACK
+# ════════════════════════════════════════════════════════════════════════════════
+frontend_dist = os.path.abspath(os.path.join(os.path.dirname(__file__), "../frontend/dist"))
+if os.path.exists(frontend_dist):
+    assets_dir = os.path.join(frontend_dist, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa(full_path: str):
+        # Do not intercept API, health, or WS endpoints
+        if full_path.startswith("api/") or full_path.startswith("ws/") or full_path in ("health", "ready", "docs", "openapi.json"):
+            raise HTTPException(status_code=404, detail="Not found")
+        # Direct static asset match (e.g. logo.png, earth_world.jpg, favicon)
+        target = os.path.join(frontend_dist, full_path)
+        if full_path and os.path.exists(target) and os.path.isfile(target):
+            return FileResponse(target)
+        # SPA index.html fallback for client-side routing
+        index_file = os.path.join(frontend_dist, "index.html")
+        if os.path.exists(index_file):
+            return FileResponse(index_file)
+        return JSONResponse(status_code=404, content={"message": "Frontend not found"})
+

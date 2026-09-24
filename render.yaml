@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: meetmux-control-tower
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    region: oregon
+    branch: main
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8050
