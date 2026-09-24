@@ -11,3 +11,7 @@ services:
     envVars:
       - key: PORT
         value: 8050
+      - key: VITE_MAPBOX_TOKEN
+        sync: false
+      - key: MAPBOX_TOKEN
+        sync: false

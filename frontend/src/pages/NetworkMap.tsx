@@ -4,14 +4,14 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { Layers, X, MapPin, AlertTriangle, Package, Activity, ChevronRight, Globe, Zap } from 'lucide-react';
-import { fetchNetwork, fetchNodeById, fetchBottlenecks } from '../services/api';
+import { fetchNetwork, fetchNodeById, fetchBottlenecks, fetchMapboxToken } from '../services/api';
 import { useAppStore } from '../store/useAppStore';
 import { drawerVariants, pageVariants, fadeUpItem } from '../motion/variants';
 import { RiskBadge, StatusChip, BottleneckBar, DemoBadge, Skeleton } from '../components/ui/SharedComponents';
 import { formatINR, cn } from '../utils';
 import type { Node, Route } from '../types';
 
-const MAPBOX_TOKEN = (import.meta as unknown as { env: Record<string, string> }).env?.VITE_MAPBOX_TOKEN || '';
+const ENV_MAPBOX_TOKEN = (import.meta as unknown as { env: Record<string, string> }).env?.VITE_MAPBOX_TOKEN || '';
 
 const NODE_COLORS: Record<string, string> = {
   Port: '#14B8A6',           // Secondary teal
@@ -298,7 +298,14 @@ export default function NetworkMapPage() {
   const [mapError, setMapError] = useState<string | null>(null);
   const [layerFilters, setLayerFilters] = useState({ warehouses: true, ports: true, customers: true, routes: true, suppliers: true });
   const [showLayers, setShowLayers] = useState(false);
-  const [viewMode, setViewMode] = useState<'mapbox' | 'canvas'>(!MAPBOX_TOKEN || MAPBOX_TOKEN.includes('your-token-here') ? 'canvas' : 'mapbox');
+  const [activeToken, setActiveToken] = useState<string>(() => {
+    return localStorage.getItem('meetmux_mapbox_token') || ENV_MAPBOX_TOKEN || '';
+  });
+  const [tokenModalOpen, setTokenModalOpen] = useState(false);
+  const [tokenInput, setTokenInput] = useState('');
+  const [viewMode, setViewMode] = useState<'mapbox' | 'canvas'>(
+    (localStorage.getItem('meetmux_mapbox_token') || ENV_MAPBOX_TOKEN) ? 'mapbox' : 'canvas'
+  );
 
   const { selectedNodeId, setSelectedNode, telemetryEvents } = useAppStore();
 
@@ -312,11 +319,24 @@ export default function NetworkMapPage() {
 
   const bottleneckMap: Map<string, any> = new Map(bottlenecks?.bottlenecks?.map((b: any) => [b.node_id as string, b]) ?? []);
 
+  // Fetch token dynamically from server if not set
+  useEffect(() => {
+    if (!activeToken) {
+      fetchMapboxToken().then(serverToken => {
+        if (serverToken && !serverToken.includes('your-token-here')) {
+          setActiveToken(serverToken);
+          localStorage.setItem('meetmux_mapbox_token', serverToken);
+          setViewMode('mapbox');
+        }
+      }).catch(() => {});
+    }
+  }, [activeToken]);
+
   // Initialize Mapbox map (only if token is available and mode is mapbox)
   useEffect(() => {
     if (viewMode !== 'mapbox') return;
     if (!mapContainerRef.current) return;
-    if (!MAPBOX_TOKEN || MAPBOX_TOKEN.includes('your-token-here')) {
+    if (!activeToken || activeToken.includes('your-token-here')) {
       setMapError('No Mapbox token');
       setViewMode('canvas');
       return;
@@ -331,7 +351,7 @@ export default function NetworkMapPage() {
           remove?: () => void;
         };
       };
-      mapboxgl.accessToken = MAPBOX_TOKEN;
+      mapboxgl.accessToken = activeToken;
 
       const map = new mapboxgl.Map({
         container: mapContainerRef.current!,
@@ -353,7 +373,7 @@ export default function NetworkMapPage() {
       (mapRef.current as { remove?: () => void })?.remove?.();
       mapRef.current = null;
     };
-  }, [viewMode]);
+  }, [viewMode, activeToken]);
 
   // Add node markers when map & data are ready (Mapbox mode)
   useEffect(() => {
@@ -421,25 +441,36 @@ export default function NetworkMapPage() {
       className="relative h-[calc(100vh-58px)] overflow-hidden"
     >
       {/* View Mode Toggle */}
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-1 bg-black/40 backdrop-blur-md rounded-xl p-1 border border-white/10">
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 bg-[#0D1B2A]/90 backdrop-blur-md rounded-xl p-1 border border-[#1B3448] shadow-lg">
         <button
           onClick={() => setViewMode('canvas')}
           className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
-            viewMode === 'canvas' ? 'bg-rose-500/30 text-rose-200' : 'text-white/50 hover:text-white')}
+            viewMode === 'canvas' ? 'bg-[#00B8D9]/20 text-[#22D3EE] border border-[#22D3EE]/30' : 'text-[#78909C] hover:text-[#E6F1F5]')}
         >
           <Zap className="w-3.5 h-3.5" />
           Live Canvas
         </button>
-        <button
-          onClick={() => setViewMode('mapbox')}
-          className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
-            viewMode === 'mapbox' ? 'bg-rose-500/30 text-rose-200' : 'text-white/50 hover:text-white')}
-          title={!MAPBOX_TOKEN ? 'Requires VITE_MAPBOX_TOKEN in .env' : undefined}
-        >
-          <Globe className="w-3.5 h-3.5" />
-          Mapbox
-          {!MAPBOX_TOKEN && <span className="text-[9px] text-amber-400 ml-1">no token</span>}
-        </button>
+        {activeToken ? (
+          <button
+            onClick={() => setViewMode('mapbox')}
+            className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
+              viewMode === 'mapbox' ? 'bg-[#00B8D9]/20 text-[#22D3EE] border border-[#22D3EE]/30' : 'text-[#78909C] hover:text-[#E6F1F5]')}
+          >
+            <Globe className="w-3.5 h-3.5" />
+            Mapbox 3D
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 ml-1 inline-block animate-pulse" />
+          </button>
+        ) : (
+          <button
+            onClick={() => setTokenModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition-colors"
+            title="Click to enter Mapbox token"
+          >
+            <Globe className="w-3.5 h-3.5" />
+            Mapbox
+            <span className="text-[9px] text-amber-400 ml-0.5 font-bold">● Add Token</span>
+          </button>
+        )}
       </div>
 
       {/* Canvas Network Visualization (always rendered for canvas mode) */}
@@ -578,6 +609,63 @@ export default function NetworkMapPage() {
           </div>
         ))}
       </div>
+
+      {/* Token Modal */}
+      <AnimatePresence>
+        {tokenModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-md rounded-2xl p-6 bg-[#0D1B2A] border border-[#1B3448] shadow-2xl"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-[#22D3EE]" />
+                  <h3 className="text-base font-bold text-[#E6F1F5]">Connect Mapbox 3D</h3>
+                </div>
+                <button onClick={() => setTokenModalOpen(false)} className="text-[#78909C] hover:text-[#E6F1F5]">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <p className="text-xs text-[#8FA8B8] mb-4 leading-relaxed">
+                Paste your Mapbox access token below to switch from Canvas to real-time 3D vector satellite tiles. Your token is safely saved in your browser storage.
+              </p>
+              <input
+                type="text"
+                value={tokenInput}
+                onChange={e => setTokenInput(e.target.value)}
+                placeholder="pk.eyJ1Ijo..."
+                className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-[#07111F] border border-[#1B3448] text-[#E6F1F5] placeholder-[#78909C] focus:outline-none focus:border-[#22D3EE] mb-4 font-mono"
+              />
+              <div className="flex items-center justify-end gap-2">
+                <button
+                  onClick={() => setTokenModalOpen(false)}
+                  className="px-4 py-2 rounded-xl text-xs text-[#78909C] hover:bg-[#1B3448]"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    const t = tokenInput.trim();
+                    if (t) {
+                      setActiveToken(t);
+                      localStorage.setItem('meetmux_mapbox_token', t);
+                      setViewMode('mapbox');
+                      setTokenModalOpen(false);
+                    }
+                  }}
+                  disabled={!tokenInput.trim()}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-[#07111F] bg-[#22D3EE] hover:bg-[#14B8A6] disabled:opacity-50 transition-colors shadow-cyan-glass"
+                >
+                  Save & Enable Mapbox
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

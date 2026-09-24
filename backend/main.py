@@ -161,6 +161,12 @@ async def system_health_dashboard():
         "demo_mode": True
     }
 
+@app.get("/api/v1/config/mapbox", tags=["Observability"])
+async def get_mapbox_config():
+    """Returns Mapbox public access token from environment variables if set."""
+    token = os.getenv("VITE_MAPBOX_TOKEN") or os.getenv("MAPBOX_TOKEN") or ""
+    return {"token": token}
+
 # ════════════════════════════════════════════════════════════════════════════════
 # DASHBOARD (v1 + legacy aliases)
 # ════════════════════════════════════════════════════════════════════════════════

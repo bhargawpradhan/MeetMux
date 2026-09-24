@@ -103,3 +103,4 @@ export const loadDemoNetwork = () => client.post(`${LEGACY}/demo/load`).then(r =
 // ─── Backward-Compatibility Aliases ──────────────────────────────────────────
 export const fetchDashboardSummary = fetchDashboard;
 export const fetchAffectedNodes = fetchGraphImpact;
+export const fetchMapboxToken = () => client.get(`${BASE}/config/mapbox`).then(r => r.data?.token || '');

@@ -8,6 +8,9 @@
 FROM node:20-alpine AS frontend-builder
 WORKDIR /app/frontend
 
+ARG VITE_MAPBOX_TOKEN=""
+ENV VITE_MAPBOX_TOKEN=$VITE_MAPBOX_TOKEN
+
 COPY frontend/package*.json ./
 RUN npm ci
 
