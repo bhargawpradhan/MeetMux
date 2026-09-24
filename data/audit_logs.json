@@ -1,0 +1,148 @@
+[
+  {
+    "id": "AUD-111",
+    "user": "API",
+    "role": "SYSTEM",
+    "action": "SIMULATION_STARTED",
+    "entity_id": "NODE-MUM-102",
+    "details": {
+      "scenario": "warehouse_failure",
+      "severity": 0.75
+    },
+    "timestamp": "2026-09-24T12:52:09.698725+00:00",
+    "result": "COMPLETED"
+  },
+  {
+    "id": "AUD-110",
+    "user": "API",
+    "role": "SYSTEM",
+    "action": "SIMULATION_STARTED",
+    "entity_id": "NODE-MUM-102",
+    "details": {
+      "scenario": "warehouse_failure",
+      "severity": 0.75
+    },
+    "timestamp": "2026-09-24T12:44:44.853840+00:00",
+    "result": "COMPLETED"
+  },
+  {
+    "id": "AUD-109",
+    "user": "OPERATOR_ADMIN",
+    "role": "OPERATIONS_MANAGER",
+    "action": "RECOMMENDATION_APPROVED",
+    "entity_id": "REC-101",
+    "details": {
+      "title": "Dynamic Load Rerouting around Bhiwandi Central Mega Hub (H04)",
+      "target_entity": "Bhiwandi Central Mega Hub (H04)",
+      "expected_savings_inr": 845000.0,
+      "notes": ""
+    },
+    "timestamp": "2026-09-24T12:44:36.098740+00:00",
+    "result": "COMMITTED"
+  },
+  {
+    "id": "AUD-108",
+    "user": "TEST_OPS_MGR",
+    "role": "OPERATIONS_MANAGER",
+    "action": "RECOMMENDATION_APPROVED",
+    "entity_id": "REC-101",
+    "details": {
+      "title": "Dynamic Load Rerouting around Bhiwandi Central Mega Hub (H04)",
+      "target_entity": "Bhiwandi Central Mega Hub (H04)",
+      "expected_savings_inr": 845000.0,
+      "notes": "Test approval"
+    },
+    "timestamp": "2026-09-24T09:14:33.387107+00:00",
+    "result": "COMMITTED"
+  },
+  {
+    "id": "AUD-107",
+    "user": "TEST_CALLER",
+    "role": "TEST_USER",
+    "action": "UNIT_TEST_ACTION",
+    "entity_id": "ENTITY-123",
+    "details": {
+      "status": "ok"
+    },
+    "timestamp": "2026-09-24T09:14:29.274955+00:00",
+    "result": "SUCCESS"
+  },
+  {
+    "id": "AUD-106",
+    "user": "TEST_OPS_MGR",
+    "role": "OPERATIONS_MANAGER",
+    "action": "RECOMMENDATION_APPROVED",
+    "entity_id": "REC-101",
+    "details": {
+      "title": "Dynamic Load Rerouting around Bhiwandi Central Mega Hub (H04)",
+      "target_entity": "Bhiwandi Central Mega Hub (H04)",
+      "expected_savings_inr": 845000.0,
+      "notes": "Test approval"
+    },
+    "timestamp": "2026-09-24T09:13:40.642005+00:00",
+    "result": "COMMITTED"
+  },
+  {
+    "id": "AUD-105",
+    "user": "TEST_CALLER",
+    "role": "TEST_USER",
+    "action": "UNIT_TEST_ACTION",
+    "entity_id": "ENTITY-123",
+    "details": {
+      "status": "ok"
+    },
+    "timestamp": "2026-09-24T09:13:36.533252+00:00",
+    "result": "SUCCESS"
+  },
+  {
+    "id": "AUD-101",
+    "user": "ops_lead_mumbai",
+    "role": "OPERATIONS_MANAGER",
+    "action": "SIMULATION_STARTED",
+    "entity_id": "NODE-MUM-102",
+    "details": {
+      "scenario": "warehouse_failure",
+      "severity": 0.85
+    },
+    "timestamp": "2026-09-24T11:20:00+05:30",
+    "result": "COMPLETED"
+  },
+  {
+    "id": "AUD-102",
+    "user": "analyst_delhi",
+    "role": "ANALYST",
+    "action": "PREDICTION_REQUEST",
+    "entity_id": "SHP-1024",
+    "details": {
+      "model_version": "xgb-v1.2",
+      "risk": "CRITICAL"
+    },
+    "timestamp": "2026-09-24T11:25:00+05:30",
+    "result": "PROCESSED"
+  },
+  {
+    "id": "AUD-103",
+    "user": "ops_director",
+    "role": "ADMIN",
+    "action": "RECOMMENDATION_APPROVED",
+    "entity_id": "REC-101",
+    "details": {
+      "action": "Dynamic Load Rerouting around Bhiwandi",
+      "expected_savings_inr": 845000.0
+    },
+    "timestamp": "2026-09-24T11:35:00+05:30",
+    "result": "COMMITTED"
+  },
+  {
+    "id": "AUD-104",
+    "user": "dispatcher_03",
+    "role": "OPERATIONS_MANAGER",
+    "action": "ALERT_RESOLVED",
+    "entity_id": "ALT-006",
+    "details": {
+      "entity": "JNPT Port Container Staging"
+    },
+    "timestamp": "2026-09-24T11:58:00+05:30",
+    "result": "CONFIRMED"
+  }
+]

@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ALT-001",
+    "severity": "CRITICAL",
+    "timestamp": "2026-09-24T10:42:00+05:30",
+    "entity_id": "NODE-MUM-102",
+    "entity_name": "Bhiwandi Central Mega Hub (H04)",
+    "reason": "Hub utilization at 94% \u2014 Inbound queue overflow imminent. 23 critical SLA pharma shipments blocked.",
+    "recommended_investigation": "Trigger emergency capacity allocation. Reroute SHP-1024, SHP-1056, SHP-1088 via NH-48 bypass.",
+    "financial_exposure_inr": 8450000.0,
+    "status": "ACTIVE"
+  },
+  {
+    "id": "ALT-002",
+    "severity": "HIGH",
+    "timestamp": "2026-09-24T10:58:00+05:30",
+    "entity_id": "SHP-1024",
+    "entity_name": "SHP-1024 (Pharma Critical \u2014 \u20b945L Batch)",
+    "reason": "Delay probability at 81%. Cold chain temperature drift detected (24.5\u00b0C). SLA breach predicted in 4.2 hours.",
+    "recommended_investigation": "Expedite cold storage vehicle dispatch. Contact consignee for SLA extension.",
+    "financial_exposure_inr": 4500000.0,
+    "status": "ACKNOWLEDGED"
+  },
+  {
+    "id": "ALT-003",
+    "severity": "HIGH",
+    "timestamp": "2026-09-24T11:15:00+05:30",
+    "entity_id": "ROUTE-501",
+    "entity_name": "Mumbai\u2013Delhi NH-48 Trunk Corridor",
+    "reason": "SEVERE traffic congestion detected. Average speed dropped from 55 km/h to 18 km/h.",
+    "recommended_investigation": "Activate sub-corridor bypass. Notify drivers on 34 in-transit vehicles.",
+    "financial_exposure_inr": 2850000.0,
+    "status": "ACKNOWLEDGED"
+  },
+  {
+    "id": "ALT-004",
+    "severity": "MEDIUM",
+    "timestamp": "2026-09-24T11:22:00+05:30",
+    "entity_id": "NODE-DEL-106",
+    "entity_name": "Okhla Fulfilment Center (H02)",
+    "reason": "89% utilization with 14 unprocessed CRITICAL_SLA electronics shipments. Processing SLA at risk.",
+    "recommended_investigation": "Prioritize electronics batch processing. Defer FMCG to night shift.",
+    "financial_exposure_inr": 2200000.0,
+    "status": "ACTIVE"
+  },
+  {
+    "id": "ALT-005",
+    "severity": "MEDIUM",
+    "timestamp": "2026-09-24T11:40:00+05:30",
+    "entity_id": "SHP-1042",
+    "entity_name": "SHP-1042 (Electronics \u2014 \u20b928L Consumer Goods)",
+    "reason": "Delay probability at 74%. Route congestion at 84% on Okhla inbound corridor.",
+    "recommended_investigation": "Reroute through Noida secondary entry. Confirm alternate dock slot.",
+    "financial_exposure_inr": 2800000.0,
+    "status": "ACTIVE"
+  },
+  {
+    "id": "ALT-006",
+    "severity": "INFO",
+    "timestamp": "2026-09-24T11:55:00+05:30",
+    "entity_id": "NODE-PORT-101",
+    "entity_name": "JNPT Nhava Sheva Port",
+    "reason": "Above-average vessel berthing queue. ETA for next container clearance: +6 hours vs baseline.",
+    "recommended_investigation": "Monitor port authority clearance notifications. Pre-schedule truck staging.",
+    "financial_exposure_inr": 580000.0,
+    "status": "ACTIVE"
+  }
+]

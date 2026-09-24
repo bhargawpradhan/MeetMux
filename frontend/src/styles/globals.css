@@ -1,0 +1,327 @@
+/* MeetMux Control Tower — Dark Navy & Cyan/Teal Transparent Glass Design System */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Exact Palette & Design Tokens ─────────────────────────────────────────── */
+:root {
+  --bg-primary: #07111F;
+  --bg-secondary: #0D1B2A;
+  --border-card: #1B3448;
+  --primary-blue: #00B8D9;
+  --bright-cyan: #22D3EE;
+  --secondary-teal: #14B8A6;
+  --text-main: #E6F1F5;
+  --text-muted: #78909C;
+  --warning: #FBBF24;
+  --critical: #FF4D5A;
+  --success: #2DD4BF;
+
+  /* Transparent Dark Navy Glass Panels */
+  --glass-bg: rgba(13, 27, 42, 0.65);
+  --glass-bg-hover: rgba(13, 27, 42, 0.85);
+  --glass-bg-dark: rgba(7, 17, 31, 0.75);
+  --glass-border: #1B3448;
+  --glass-border-hover: #22D3EE;
+  --glass-shadow: 0 8px 32px 0 rgba(3, 8, 16, 0.5), inset 0 0 0 1px rgba(27, 52, 72, 0.6);
+  --glass-shadow-hover: 0 16px 40px -10px rgba(34, 211, 238, 0.18), 0 0 20px rgba(34, 211, 238, 0.15), inset 0 0 16px rgba(27, 52, 72, 0.8);
+  --backdrop-blur: 20px;
+  --radius-card: 18px;
+
+  --color-risk-low: #2DD4BF;
+  --color-risk-medium: #FBBF24;
+  --color-risk-high: #F97316;
+  --color-risk-critical: #FF4D5A;
+  --color-risk-low-bg: rgba(45, 212, 191, 0.12);
+  --color-risk-medium-bg: rgba(251, 191, 36, 0.12);
+  --color-risk-high-bg: rgba(249, 115, 22, 0.12);
+  --color-risk-critical-bg: rgba(255, 77, 90, 0.15);
+}
+
+/* ─── Base ─────────────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
+  scroll-behavior: smooth;
+  background-color: #07111F;
+}
+
+body {
+  /* Complete Transparent Dark Navy & Cyan Atmosphere Background */
+  background: radial-gradient(circle at 18% 18%, rgba(0, 184, 217, 0.08) 0%, transparent 45%),
+              radial-gradient(circle at 82% 22%, rgba(20, 184, 166, 0.07) 0%, transparent 40%),
+              radial-gradient(circle at 50% 80%, rgba(34, 211, 238, 0.06) 0%, transparent 55%),
+              linear-gradient(135deg, #07111F 0%, #09172A 50%, #050B14 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: #E6F1F5;
+  overflow-x: hidden;
+  perspective: 1200px;
+}
+
+/* Subtle Ambient Dark Navy & Cyan Glow Orbs */
+body::before {
+  content: '';
+  position: fixed;
+  width: 550px;
+  height: 550px;
+  top: -150px;
+  right: -150px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.08) 0%, rgba(0, 184, 217, 0.03) 50%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orb-drift-1 22s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  bottom: -150px;
+  left: -150px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.07) 0%, rgba(7, 17, 31, 0.04) 50%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orb-drift-2 28s ease-in-out infinite alternate;
+}
+
+@keyframes orb-drift-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-140px, 100px) scale(1.1); }
+  100% { transform: translate(-40px, 180px) scale(0.92); }
+}
+
+@keyframes orb-drift-2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(120px, -90px) scale(1.12); }
+  100% { transform: translate(60px, -180px) scale(0.96); }
+}
+
+/* ─── Ultra-Transparent Glassmorphism with Dark Navy & Thin #1B3448 Borders ─ */
+.glass {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--backdrop-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--backdrop-blur)) saturate(160%);
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow);
+  color: var(--text-main);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-dark {
+  background: var(--glass-bg-dark) !important;
+  backdrop-filter: blur(var(--backdrop-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--backdrop-blur)) saturate(160%);
+  border: 1px solid #1B3448 !important;
+  box-shadow: var(--glass-shadow);
+  color: var(--text-main);
+}
+
+/* Subtle Hover on Transparent Glass Cards */
+.glass-card {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--backdrop-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--backdrop-blur)) saturate(160%);
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-card);
+  color: var(--text-main);
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2),
+              box-shadow 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2),
+              background 0.3s ease,
+              border-color 0.3s ease;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.glass-card:hover {
+  transform: perspective(1000px) translateY(-3px) translateZ(8px) scale(1.008);
+  background: var(--glass-bg-hover) !important;
+  border-color: rgba(34, 211, 238, 0.45) !important;
+  box-shadow: var(--glass-shadow-hover);
+}
+
+.glass-panel {
+  @apply glass-card p-6;
+}
+
+/* ─── Interactive Buttons with 3D Pop & Neon Sheen ─────────────────────────── */
+button, a[role="button"] {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.25s ease,
+              filter 0.25s ease;
+}
+
+button:hover, a[role="button"]:hover {
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.08);
+}
+
+button:active, a[role="button"]:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+/* ─── Risk Level Pills ──────────────────────────────────────────────────────── */
+.risk-pill {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border backdrop-blur-md;
+  font-variant-numeric: tabular-nums;
+  transition: all 0.25s ease;
+}
+
+.risk-pill:hover {
+  transform: scale(1.06);
+}
+
+.risk-pill-critical {
+  @apply risk-pill;
+  color: #DC2626;
+  background: rgba(220, 38, 38, 0.14);
+  border-color: rgba(220, 38, 38, 0.45);
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.25);
+}
+
+.risk-pill-high {
+  @apply risk-pill;
+  color: #EA580C;
+  background: rgba(234, 88, 12, 0.14);
+  border-color: rgba(234, 88, 12, 0.45);
+  box-shadow: 0 0 10px rgba(234, 88, 12, 0.2);
+}
+
+.risk-pill-medium {
+  @apply risk-pill;
+  color: #D97706;
+  background: rgba(217, 119, 6, 0.14);
+  border-color: rgba(217, 119, 6, 0.4);
+}
+
+.risk-pill-low {
+  @apply risk-pill;
+  color: #059669;
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+/* ─── Animated Pulse Ring (CRITICAL) ───────────────────────────────────────── */
+.critical-pulse {
+  animation: critical-neon-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes critical-neon-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.45), 0 8px 32px rgba(220, 38, 38, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(220, 38, 38, 0), 0 12px 42px rgba(220, 38, 38, 0.35);
+  }
+}
+
+/* ─── Shimmer Skeleton ──────────────────────────────────────────────────────── */
+.shimmer {
+  background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0.08) 25%,
+    rgba(255, 255, 255, 0.32) 50%,
+    rgba(255, 255, 255, 0.08) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ─── Mapbox & Recharts Transparent Theming ────────────────────────────────── */
+.mapboxgl-map {
+  border-radius: 20px;
+}
+
+.mapboxgl-ctrl-group {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow) !important;
+}
+
+.mapboxgl-popup-content {
+  background: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(24px) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--glass-shadow-hover) !important;
+  color: var(--pink-dark) !important;
+}
+
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(24px) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--glass-shadow-hover) !important;
+}
+
+/* ─── Table Row Hover 3D Shift ─────────────────────────────────────────────── */
+tbody tr {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.45) !important;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.06);
+}
+
+/* ─── Scrollbars ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(225, 29, 72, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(225, 29, 72, 0.5);
+}
+
+/* ─── Demo Badge ──────────────────────────────────────────────────────────── */
+.demo-badge {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-bold rounded-full;
+  background: rgba(225, 29, 72, 0.12);
+  color: #E11D48;
+  border: 1px solid rgba(225, 29, 72, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+/* ─── Live Indicator ──────────────────────────────────────────────────────── */
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: #10B981;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #10B981;
+  animation: live-blink 1.4s ease-in-out infinite;
+}
+
+@keyframes live-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.75); }
+}
+
+/* ─── Glowing Neon Text ───────────────────────────────────────────────────── */
+.neon-glow-text {
+  text-shadow: 0 0 12px rgba(225, 29, 72, 0.35);
+}
